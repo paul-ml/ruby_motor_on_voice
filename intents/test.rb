@@ -1,22 +1,22 @@
 # coding: utf-8
-motor_running = false
+require './lib/motor'
 
 intent "LaunchRequest" do
    ask("Hello, How can I help you today ?")
 end
 
 intent "MotorOnIntent" do
-  if motor_running
+  if Motor.running?
     tell("Motor has already started running")
   else
-    motor_running = true
+    Motor.on(true)
     tell("Starting motor now.")
   end
 end
 
 intent "MotorOffIntent" do
-  if motor_running
-    motor_running = false
+  if Motor.running?
+    Motor.on(false)
     tell("Motor will be stopped now.")
   else
     tell("Motor has already stopped running")
@@ -24,7 +24,7 @@ intent "MotorOffIntent" do
 end
 
 intent "MotorStatusIntent" do
-  if motor_running
+  if Motor.running?
     ask("Motor is running. Do I need to stop motor now ?", session_attributes: { persist: "running" })
   else
     ask("motor is free for use. Do I need to start motor now ?", session_attributes: { persist: "not_running" })
@@ -34,10 +34,10 @@ end
 intent "YesIntent" do
   persisted_data = request.session_attribute("persist")
   if persisted_data == "running"
-    motor_running = false
+    Motor.on(false)
     tell("Motor will be stopped now.")
   else
-    motor_running = true
+    Motor.on(true)
     tell("Starting motor now.")
   end
 end
