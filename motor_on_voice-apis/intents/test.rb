@@ -1,9 +1,9 @@
 # coding: utf-8
 require './lib/motor'
 
-intent "LaunchRequest" do
-   ask("Hello, How can I help you today ?")
-end
+# intent "LaunchRequest" do
+#    ask("Hello, How can I help you today ?")
+# end
 
 intent "MotorOnIntent" do
   if Motor.running?
