@@ -1,4 +1,5 @@
 #include <string.h>
+#include <stdio.h>
 #include <stdlib.h>
 
 #include "esp_log.h"
@@ -9,6 +10,7 @@
 
 #define MAX_HTTP_RECV_BUFFER 512
 static const char *TAG = "HTTP_CLIENT";
+static char response[10];
 esp_http_client_handle_t client;
 
 extern const char howsmyssl_com_root_cert_pem_start[] asm("_binary_howsmyssl_com_root_cert_pem_start");
@@ -33,8 +35,8 @@ esp_err_t _http_event_handler(esp_http_client_event_t *evt)
             ESP_LOGD(TAG, "HTTP_EVENT_ON_DATA, len=%d", evt->data_len);
             if (!esp_http_client_is_chunked_response(evt->client)) {
                 // Write out data
-                printf("%.*s", evt->data_len, (char*)evt->data);
-                // response = (char*)evt->data;
+                // printf("%.*s", evt->data_len, (char*)evt->data);
+                strncpy(response, evt->data, evt->data_len);
             }
 
             break;
@@ -59,11 +61,14 @@ void c_http_client_init(mrb_vm *vm, mrb_value *v, int argc){
 
 void c_http_request(mrb_vm *vm, mrb_value *v, int argc){
   esp_err_t err = esp_http_client_perform(client);
+  mrb_value result;
     if (err != ESP_OK) {
-        printf("\n");
-        ESP_LOGE(TAG, "HTTP GET request failed: %s", esp_err_to_name(err));
+      result = mrbc_string_new(vm, esp_err_to_name(err), strlen(esp_err_to_name(err)));
+      SET_RETURN(result);
+      // ESP_LOGE(TAG, "HTTP GET request failed: %s", esp_err_to_name(err));
     }else{
-        printf("\n");
+      result = mrbc_string_new(vm, response, strlen(response));
+      SET_RETURN(result);
     }
 }
 
