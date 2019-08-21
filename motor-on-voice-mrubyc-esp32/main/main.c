@@ -7,7 +7,7 @@
 
 #include "mrubyc.h"
 #include "wifi.h"
-
+#include "mqtt_broker.h"
 // #include "models/[replace with your file].h"
 #include "loops/master.h"
 
@@ -56,6 +56,9 @@ void app_main(void) {
   mrbc_define_method(0, mrbc_class_object, "debugprint", c_debugprint);
   mrbc_define_method(0, mrbc_class_object, "connected_to_network", c_network_connected);
   mrbc_define_method(0, mrbc_class_object, "initialise_wifi", c_wifi_init_sta);
+  mrbc_define_method(0, mrbc_class_object, "mqtt_app_start", mqtt_app_start);
+  mrbc_define_method(0, mrbc_class_object, "check_latest_updates", c_check_latest_updates);
+  mrbc_define_method(0, mrbc_class_object, "connected_to_mqqt_broker", c_mqtt_connected);
   mrbc_create_task(master, 0);
   mrbc_run();
 }

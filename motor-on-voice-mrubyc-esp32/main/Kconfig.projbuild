@@ -17,4 +17,22 @@ menu "Example Configuration"
         default 5
         help
             Set the Maximum retry to avoid station reconnecting to the AP unlimited when the AP is really inexistent.
+
+    config ESP_MQTT_URI
+        string "MQTT URI"
+        default "mqtt://xxxxxxxxxx.com:<PORT>"
+        help
+            Set the MQTT URI, which is a combination of host name and port number
+
+    config ESP_MQTT_USERNAME
+        string "MQTT Username"
+        default "mqtt_username"
+        help
+            Expected to be the username associated with host
+
+    config ESP_MQTT_PASSWORD
+        string "MQTT Password"
+        default "mqqt_password"
+        help
+            Expected to be the user's password of host
 endmenu
