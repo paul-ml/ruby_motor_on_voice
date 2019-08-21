@@ -15,7 +15,6 @@ class Motor
     }
     client = MQTT::Client.connect(conn_opts)
     topic = ENV["MQTT_TOPIC"]
-    client = Motor.init_mqtt_broker
     client.publish(topic, message)
   end
 
