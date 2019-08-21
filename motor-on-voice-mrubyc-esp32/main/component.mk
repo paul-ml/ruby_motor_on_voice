@@ -5,7 +5,6 @@
 
 COMPONENT_DEPENDS := mrubyc
 COMPONENT_EXTRA_CLEAN = SRCFILES
-COMPONENT_EMBED_TXTFILES := howsmyssl_com_root_cert.pem
 
 MRBC = mrbc
 SRCDIR = $(PROJECT_PATH)/mrblib
