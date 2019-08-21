@@ -7,7 +7,6 @@
 
 #include "mrubyc.h"
 #include "wifi.h"
-#include "esp_http.h"
 
 // #include "models/[replace with your file].h"
 #include "loops/master.h"
@@ -57,9 +56,6 @@ void app_main(void) {
   mrbc_define_method(0, mrbc_class_object, "debugprint", c_debugprint);
   mrbc_define_method(0, mrbc_class_object, "connected_to_network", c_network_connected);
   mrbc_define_method(0, mrbc_class_object, "initialise_wifi", c_wifi_init_sta);
-  mrbc_define_method(0, mrbc_class_object, "http_client_init", c_http_client_init);
-  mrbc_define_method(0, mrbc_class_object, "send_http_request", c_http_request);
-  mrbc_define_method(0, mrbc_class_object,  "http_client_cleanup", c_http_client_cleanup);
   mrbc_create_task(master, 0);
   mrbc_run();
 }
