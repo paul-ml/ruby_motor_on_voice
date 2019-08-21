@@ -57,8 +57,9 @@ void app_main(void) {
   mrbc_define_method(0, mrbc_class_object, "connected_to_network", c_network_connected);
   mrbc_define_method(0, mrbc_class_object, "initialise_wifi", c_wifi_init_sta);
   mrbc_define_method(0, mrbc_class_object, "mqtt_app_start", mqtt_app_start);
-  mrbc_define_method(0, mrbc_class_object, "check_latest_updates", c_check_latest_updates);
+  mrbc_define_method(0, mrbc_class_object, "new_request", c_check_latest_updates);
   mrbc_define_method(0, mrbc_class_object, "connected_to_mqqt_broker", c_mqtt_connected);
+  mrbc_define_method(0, mrbc_class_object, "received_message", c_received_message);
   mrbc_create_task(master, 0);
   mrbc_run();
 }
