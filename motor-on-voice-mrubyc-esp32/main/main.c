@@ -8,7 +8,9 @@
 #include "mrubyc.h"
 #include "wifi.h"
 #include "mqtt_broker.h"
-// #include "models/[replace with your file].h"
+#include "motor.h"
+
+#include "models/motor.h"
 #include "loops/master.h"
 
 #define MEMORY_SIZE (1024*40)
@@ -60,6 +62,10 @@ void app_main(void) {
   mrbc_define_method(0, mrbc_class_object, "new_request", c_check_latest_updates);
   mrbc_define_method(0, mrbc_class_object, "connected_to_mqqt_broker", c_mqtt_connected);
   mrbc_define_method(0, mrbc_class_object, "received_message", c_received_message);
+  mrbc_define_method(0, mrbc_class_object, "set_servo_gpio", mcpwm_gpio_initialize);
+  mrbc_define_method(0, mrbc_class_object, "set_servo_params", mcpwm_params_initialize);
+  mrbc_define_method(0, mrbc_class_object, "run_servo", mcpwm_run_servo);
+  mrbc_create_task(motor, 0);
   mrbc_create_task(master, 0);
   mrbc_run();
 }
