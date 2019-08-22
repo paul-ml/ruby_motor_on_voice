@@ -45,3 +45,7 @@ end
 intent "NoIntent" do
   tell("Got it. Waiting to serve you again later.")
 end
+
+intent "SessionEndedRequest" do
+  respond("Hmm. something went wrong. Please try again later")
+end
