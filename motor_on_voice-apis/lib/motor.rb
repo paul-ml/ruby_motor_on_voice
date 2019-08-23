@@ -1,20 +1,22 @@
 require 'mqtt'
 class Motor
   def intialize
-    @running = false
-    @client = nil
+    # `stopped` | `running` | `error`
+    @state = 'stopped'
   end
 
   def self.on(status)
-    @running = status
-    message = status ? "Running" : "Stopped"
+    @state = status
+    message = status ? "Run" : "Stop"
     client = MqttClient.instance.client
-    topic = ENV["MQTT_TOPIC"]
-    self.init_mqtt
-    client.publish(topic, message)
+    client.publish('request', message)
+    client.get('response') do |topic, message|
+      # esp should return `running`/`stopped`/`error`
+      @state = message
+    end
   end
 
   def self.running?
-    return @running
+    @state == 'running'
   end
 end
