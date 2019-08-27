@@ -27,7 +27,7 @@ static char message[100];
 
 void c_check_latest_updates(mrb_vm *vm, mrb_value *v, int argc)
 {
-  if( new_changes == 1){  //new data arrived
+  if( new_changes == 1 ){  //new data arrived
     SET_TRUE_RETURN();
     new_changes = 0;
     return;
@@ -39,6 +39,7 @@ void c_received_message(mrb_vm *vm, mrb_value *v, int argc)
 {
   mrb_value result = mrbc_string_new(vm, message, strlen(message));
   SET_RETURN(result);
+  return;
 }
 
 void c_mqtt_connected(mrb_vm *vm, mrb_value *v, int argc)
