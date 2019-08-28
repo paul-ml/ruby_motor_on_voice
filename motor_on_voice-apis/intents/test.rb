@@ -10,14 +10,24 @@ intent "MotorOnIntent" do
     tell("Motor has already started running")
   else
     Motor.on(true)
-    tell("Starting motor now.")
+    case Motor.state
+    when 'running'
+      tell("Starting motor now.")
+    when 'error'
+      tell("something went wrong, I couldn't start the motor")
+    end
   end
 end
 
 intent "MotorOffIntent" do
   if Motor.running?
     Motor.on(false)
-    tell("Motor will be stopped now.")
+    case Motor.state
+    when 'stopped'
+      tell("Motor will be stopped now.")
+    when 'error'
+      tell("something went wrong, I couldn't stop the motor")
+    end
   else
     tell("Motor has already stopped running")
   end
