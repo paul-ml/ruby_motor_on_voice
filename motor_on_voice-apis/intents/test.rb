@@ -1,5 +1,6 @@
 # coding: utf-8
 require './lib/motor'
+require './lib/config'
 
 intent "LaunchRequest" do
    ask("Hello, How can I help you today ?")
@@ -14,7 +15,9 @@ intent "MotorOnIntent" do
     when 'running'
       tell("Starting motor now.")
     when 'error'
-      tell("something went wrong, I couldn't start the motor")
+      tell(Config::ERROR_MESSAGE)
+    when 'timeout'
+      tell(Config::TIME_OUT_MESSAGE)
     end
   end
 end
@@ -26,7 +29,9 @@ intent "MotorOffIntent" do
     when 'stopped'
       tell("Motor will be stopped now.")
     when 'error'
-      tell("something went wrong, I couldn't stop the motor")
+      tell(Config::ERROR_MESSAGE)
+    when 'timeout'
+      tell(Config::TIME_OUT_MESSAGE)
     end
   else
     tell("Motor has already stopped running")
