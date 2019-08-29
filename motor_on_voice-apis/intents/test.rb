@@ -1,5 +1,6 @@
 # coding: utf-8
 require './lib/motor'
+require './lib/config'
 
 intent "LaunchRequest" do
    ask("Hello, How can I help you today ?")
@@ -14,7 +15,7 @@ intent "MotorOnIntent" do
       tell("Starting motor now.")
     end
   else
-    tell("something went wrong, I couldn't start the motor")
+    tell(Config::ERROR_MESSAGE)
   end
 end
 
@@ -27,7 +28,7 @@ intent "MotorOffIntent" do
       tell("Motor has already stopped running")
     end
   else
-    tell("something went wrong, I couldn't stop the motor")
+    tell(Config::ERROR_MESSAGE)
   end
 end
 
@@ -39,7 +40,7 @@ intent "MotorStatusIntent" do
       ask("motor is free for use. Do I need to start motor now ?", session_attributes: { persist: "not_running" })
     end
   else
-    tell("something went wrong, Please try check the motor connection and try again later")
+    tell(Config::ERROR_MESSAGE)
   end
 end
 
@@ -59,5 +60,5 @@ intent "NoIntent" do
 end
 
 intent "SessionEndedRequest" do
-  respond("Hmm. something went wrong. Please try again later")
+  respond(Config::ERROR_MESSAGE)
 end
