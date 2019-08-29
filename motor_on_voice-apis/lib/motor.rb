@@ -8,19 +8,24 @@ class Motor
 
   def self.on(status)
     @state = status
-    message = status ? "Run" : "Stop"
+    message = status ? "running" : "stopped"
     client = MqttClient.instance.client
-    client.publish('request', message)
+    client.publish('/request', message)
     begin
       Timeout::timeout(2) do
-        client.get('response') do |topic, message|
+        client.get('/response') do |topic, message|
           # esp should return `running`/`stopped`/`error`
           @state = message
+          break
         end
       end
     rescue Timeout::Error
-      @state = "timeout"
+      @state = "error"
     end
+  end
+
+  def self.state
+    return @state
   end
 
   def self.running?
