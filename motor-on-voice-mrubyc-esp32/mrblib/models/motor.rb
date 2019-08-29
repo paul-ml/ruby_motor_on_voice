@@ -16,6 +16,7 @@ class Motor
 
   def start?()
     if new_request
+      send_notification(received_message)
       if received_message != @status
         if received_message == "running"
           @status = "running"

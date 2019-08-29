@@ -65,6 +65,7 @@ void app_main(void) {
   mrbc_define_method(0, mrbc_class_object, "set_servo_gpio", mcpwm_gpio_initialize);
   mrbc_define_method(0, mrbc_class_object, "set_servo_params", mcpwm_params_initialize);
   mrbc_define_method(0, mrbc_class_object, "run_servo", mcpwm_run_servo);
+  mrbc_define_method(0, mrbc_class_object, "send_notification", c_send_notification);
   mrbc_create_task(motor, 0);
   mrbc_create_task(master, 0);
   mrbc_run();

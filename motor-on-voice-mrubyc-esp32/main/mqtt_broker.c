@@ -24,6 +24,9 @@ static const char *TAG = "MQTT_LOG";
 static int new_changes = 0;
 static int connected = 0;
 static char message[100];
+static char topic[100];
+esp_mqtt_client_handle_t client;
+int msg_id;
 
 void c_check_latest_updates(mrb_vm *vm, mrb_value *v, int argc)
 {
@@ -51,19 +54,26 @@ void c_mqtt_connected(mrb_vm *vm, mrb_value *v, int argc)
   SET_FALSE_RETURN();
 }
 
+void c_send_notification(mrb_vm *vm, mrb_value *v, int argc)
+{
+    unsigned char *status = GET_STRING_ARG(1);
+    msg_id = esp_mqtt_client_publish(client, "/response", (char *) status, 0, 0, 0);
+    ESP_LOGI(TAG, "sent publish successful, msg_id=%d", msg_id);
+}
 
 static esp_err_t mqtt_event_handler_cb(esp_mqtt_event_handle_t event)
 {
-    esp_mqtt_client_handle_t client = event->client;
+    client = event->client;
     int msg_id;
     // your_context_t *context = event->context;
     switch (event->event_id) {
         case MQTT_EVENT_CONNECTED:
             ESP_LOGI(TAG, "MQTT_EVENT_CONNECTED");
-            msg_id = esp_mqtt_client_subscribe(client, "/topic/qos0", 0);
+            msg_id = esp_mqtt_client_subscribe(client, "/request", 0);
             ESP_LOGI(TAG, "sent subscribe successful, msg_id=%d", msg_id);
             connected = 1;
-
+            msg_id = esp_mqtt_client_subscribe(client, "/response", 0);
+            ESP_LOGI(TAG, "sent subscribe successful, msg_id=%d", msg_id);
             // msg_id = esp_mqtt_client_subscribe(client, "/topic/qos1", 1);
             // ESP_LOGI(TAG, "sent subscribe successful, msg_id=%d", msg_id);
             //
@@ -90,8 +100,13 @@ static esp_err_t mqtt_event_handler_cb(esp_mqtt_event_handle_t event)
             ESP_LOGI(TAG, "MQTT_EVENT_DATA");
             printf("TOPIC=%.*s\r\n", event->topic_len, event->topic);
             printf("DATA=%.*s\r\n", event->data_len, event->data);
+            memset(message, 0, 100);
             strncpy(message, event->data, event->data_len);
-            new_changes = 1;
+            strncpy(topic, event->topic, event->topic_len);
+            if(strcmp(topic, "/request") == 0){
+              new_changes = 1;
+            }
+            memset(topic, 0, 100);
             break;
         case MQTT_EVENT_ERROR:
             ESP_LOGI(TAG, "MQTT_EVENT_ERROR");

@@ -1,9 +1,11 @@
 SERVO_MAX_DEGREE = 90
 initialise_wifi()
 motor = Motor.new(18, 50, 0, 0)
+mqtt_retry = 0
 while true
   if connected_to_network
     if connected_to_mqqt_broker
+      mqtt_retry = 0
       if motor.start?
         for count in 0...SERVO_MAX_DEGREE
             #puts "running...."
@@ -18,7 +20,10 @@ while true
         sleep(1)
       end
     else
-      mqtt_app_start()
+      if mqtt_retry < 1
+        mqtt_retry += 1
+        mqtt_app_start()
+      end
       sleep(2)
     end
   else
