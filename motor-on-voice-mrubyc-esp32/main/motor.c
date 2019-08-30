@@ -15,13 +15,6 @@
 uint32_t angle, count;
 mcpwm_config_t pwm_config;
 
-// static uint32_t servo_per_degree_init(uint32_t degree_of_rotation)
-// {
-//     uint32_t cal_pulsewidth = 0;
-//     cal_pulsewidth = (SERVO_MIN_PULSEWIDTH + (((SERVO_MAX_PULSEWIDTH - SERVO_MIN_PULSEWIDTH) * (degree_of_rotation)) / (SERVO_MAX_DEGREE)));
-//     return cal_pulsewidth;
-// }
-
 void mcpwm_gpio_initialize(mrb_vm *vm, mrb_value *v, int argc)
 {
     int pin = GET_INT_ARG(1);
@@ -63,14 +56,3 @@ void mcpwm_run_servo(mrb_vm *vm, mrb_value *v, int argc)
   // printf("pulse width: %dus\n", angle);
   mcpwm_set_duty_in_us(MCPWM_UNIT_0, MCPWM_TIMER_0, MCPWM_OPR_A, angle);
 }
-
-// void mcpwm_servo_control(mrb_vm *vm, mrb_value *v, int argc)
-// {
-//    for (count = 0; count < SERVO_MAX_DEGREE; count++) {
-//        //printf("Angle of rotation: %d\n", count);
-//        angle = servo_per_degree_init(count);
-//        //printf("pulse width: %dus\n", angle);
-//        mcpwm_set_duty_in_us(MCPWM_UNIT_0, MCPWM_TIMER_0, MCPWM_OPR_A, angle);
-//        vTaskDelay(1);     //Add delay, since it takes time for servo to rotate, generally 100ms/60degree rotation at 5V
-//    }
-// }

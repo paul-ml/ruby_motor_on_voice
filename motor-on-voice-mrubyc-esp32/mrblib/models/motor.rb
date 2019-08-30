@@ -16,7 +16,7 @@ class Motor
 
   def start?()
     if new_request
-      send_notification(received_message)
+      send_notification(received_message) #notify sinatra side whenever a new message is received
       if received_message != @status
         if received_message == "running"
           @status = "running"
