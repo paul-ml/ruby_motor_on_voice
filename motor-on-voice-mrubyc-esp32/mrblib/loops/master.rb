@@ -8,13 +8,9 @@ while true
       mqtt_retry = 0
       if motor.start?
         for count in 0...SERVO_MAX_DEGREE
-            #puts "running...."
-            #printf("Angle of rotation: %d\n", count);
             angle = motor.calc_pulsewidth(count)
-            #printf("pulse width: %dus\n", angle);
-            run_servo(angle)
-            #mcpwm_set_duty_in_us(MCPWM_UNIT_0, MCPWM_TIMER_0, MCPWM_OPR_A, angle);
-            sleep(0.002)     #Add delay, since it takes time for servo to rotate, generally 100ms/60degree rotation at 5V
+            run_servo(angle) # will run motor
+            sleep(0.002) # Add delay, since it takes time for servo to rotate, generally 100ms/60degree rotation at 5V
         end
       else
         sleep(1)
