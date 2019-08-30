@@ -26,6 +26,7 @@ static int wifi_conneted = 0;
 static const char *TAG = "WIFI_EVENT";
 
 
+/* check network connection status */
 void c_network_connected(mrb_vm *vm, mrb_value *v, int argc) {
   if(wifi_conneted == 1){
     SET_TRUE_RETURN();

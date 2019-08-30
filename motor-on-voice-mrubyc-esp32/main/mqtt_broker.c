@@ -28,6 +28,7 @@ static char topic[100];
 esp_mqtt_client_handle_t client;
 int msg_id;
 
+/* wait for new requests */
 void c_check_latest_updates(mrb_vm *vm, mrb_value *v, int argc)
 {
   if( new_changes == 1 ){  //new data arrived
@@ -38,6 +39,7 @@ void c_check_latest_updates(mrb_vm *vm, mrb_value *v, int argc)
   SET_FALSE_RETURN();
 }
 
+/* received message when a new request has arrived */
 void c_received_message(mrb_vm *vm, mrb_value *v, int argc)
 {
   mrb_value result = mrbc_string_new(vm, message, strlen(message));
@@ -54,6 +56,7 @@ void c_mqtt_connected(mrb_vm *vm, mrb_value *v, int argc)
   SET_FALSE_RETURN();
 }
 
+/* send a notification back to sinatra side to confirm the connection success */
 void c_send_notification(mrb_vm *vm, mrb_value *v, int argc)
 {
     unsigned char *status = GET_STRING_ARG(1);
