@@ -14,7 +14,7 @@ class Motor
     begin
       Timeout::timeout(2) do
         client.get('/response') do |topic, message|
-          # esp should return `running`/`stopped`/`error`
+          # esp should return `running`/`stopped`
           @state = message
           break
         end
