@@ -62,9 +62,9 @@ void app_main(void) {
   mrbc_define_method(0, mrbc_class_object, "new_request", c_check_latest_updates);
   mrbc_define_method(0, mrbc_class_object, "connected_to_mqqt_broker", c_mqtt_connected);
   mrbc_define_method(0, mrbc_class_object, "received_message", c_received_message);
-  mrbc_define_method(0, mrbc_class_object, "set_servo_gpio", mcpwm_gpio_initialize);
-  mrbc_define_method(0, mrbc_class_object, "set_servo_params", mcpwm_params_initialize);
-  mrbc_define_method(0, mrbc_class_object, "run_servo", mcpwm_run_servo);
+  mrbc_define_method(0, mrbc_class_object, "set_servo_gpio", c_servo_gpio_initialize);
+  mrbc_define_method(0, mrbc_class_object, "set_servo_params", c_servo_params_initialize);
+  mrbc_define_method(0, mrbc_class_object, "run_servo", c_run_servo_motor);
   mrbc_define_method(0, mrbc_class_object, "send_notification", c_send_notification);
   mrbc_create_task(motor, 0);
   mrbc_create_task(master, 0);

@@ -14,7 +14,7 @@ class Motor
     return pulsewidth
   end
 
-  def start?()
+  def run?
     if new_request
       send_notification(received_message) #notify sinatra side whenever a new message is received
       if received_message != @status
