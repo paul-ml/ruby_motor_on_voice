@@ -1,6 +1,6 @@
 SERVO_MAX_DEGREE = 90
 initialise_wifi()
-motor = Motor.new(18, 50, 0, 0)
+motor = Motor.new(18, 50, 0, 0) #GPIO pin, frequency, duty_cycle_a, duty_cycle_b
 mqtt_retry = 0
 while true
   if connected_to_network
