@@ -6,7 +6,7 @@ while true
   if connected_to_network
     if connected_to_mqqt_broker
       mqtt_retry = 0
-      if motor.run?
+      if motor.has_to_run?
         for count in 0...SERVO_MAX_DEGREE
             angle = motor.calc_pulsewidth(count)
             run_servo(angle) # will run motor
