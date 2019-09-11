@@ -45,17 +45,17 @@ end
 intent "YesIntent" do
   persisted_data = request.session_attribute("persist")
   if persisted_data == "running"
+    Motor.on(false)
     case Motor.state
     when 'stopped'
-      Motor.on(false)
       tell(Config::MOTOR_STOPPING)
     when 'error'
       tell(Config::ERROR_MESSAGE)
     end
   else
+    Motor.on(true)
     case Motor.state
     when 'running'
-      Motor.on(true)
       tell(Config::MOTOR_STARTING)
     when 'error'
       tell(Config::ERROR_MESSAGE)
