@@ -1,12 +1,12 @@
 SERVO_MAX_DEGREE = 90
 initialise_wifi()
-motor = Motor.new(18, 50, 0, 0)
+motor = Motor.new(18, 50, 0, 0) #GPIO pin, frequency, duty_cycle_a, duty_cycle_b
 mqtt_retry = 0
 while true
   if connected_to_network
     if connected_to_mqqt_broker
       mqtt_retry = 0
-      if motor.start?
+      if motor.has_to_run?
         for count in 0...SERVO_MAX_DEGREE
             angle = motor.calc_pulsewidth(count)
             run_servo(angle) # will run motor

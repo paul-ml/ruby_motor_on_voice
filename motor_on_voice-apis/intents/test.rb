@@ -3,21 +3,19 @@ require './lib/motor'
 require './lib/config'
 
 intent "LaunchRequest" do
-   ask("Hello, How can I help you today ?")
+   ask(Config::LAUNCH_MESSAGE)
 end
 
 intent "MotorOnIntent" do
   if Motor.running?
-    tell("Motor has already started running")
+    tell(Config::MOTOR_ALREADY_RUNNING)
   else
     Motor.on(true)
     case Motor.state
     when 'running'
-      tell("Starting motor now.")
+      tell(Config::MOTOR_STARTING)
     when 'error'
       tell(Config::ERROR_MESSAGE)
-    when 'timeout'
-      tell(Config::TIME_OUT_MESSAGE)
     end
   end
 end
@@ -27,40 +25,48 @@ intent "MotorOffIntent" do
     Motor.on(false)
     case Motor.state
     when 'stopped'
-      tell("Motor will be stopped now.")
+      tell(Config::MOTOR_STOPPING)
     when 'error'
       tell(Config::ERROR_MESSAGE)
-    when 'timeout'
-      tell(Config::TIME_OUT_MESSAGE)
     end
   else
-    tell("Motor has already stopped running")
+    tell(Config::MOTOR_ALREADY_STOPPED)
   end
 end
 
 intent "MotorStatusIntent" do
   if Motor.running?
-    ask("Motor is running. Do I need to stop motor now ?", session_attributes: { persist: "running" })
+    ask(Config::MOTOR_BUSY, session_attributes: { persist: "running" })
   else
-    ask("motor is free for use. Do I need to start motor now ?", session_attributes: { persist: "not_running" })
+    ask(Config::MOTOR_FREE, session_attributes: { persist: "not_running" })
   end
 end
 
 intent "YesIntent" do
   persisted_data = request.session_attribute("persist")
   if persisted_data == "running"
-    Motor.on(false)
-    tell("Motor will be stopped now.")
+    case Motor.state
+    when 'stopped'
+      Motor.on(false)
+      tell(Config::MOTOR_STOPPING)
+    when 'error'
+      tell(Config::ERROR_MESSAGE)
+    end
   else
-    Motor.on(true)
-    tell("Starting motor now.")
+    case Motor.state
+    when 'running'
+      Motor.on(true)
+      tell(Config::MOTOR_STARTING)
+    when 'error'
+      tell(Config::ERROR_MESSAGE)
+    end
   end
 end
 
 intent "NoIntent" do
-  tell("Got it. Waiting to serve you again later.")
+  tell(Config::DO_NOTHING)
 end
 
 intent "SessionEndedRequest" do
-  respond("Hmm. something went wrong. Please try again later")
+  respond("Hmm. something went wrong. Please check the connection and try again later")
 end

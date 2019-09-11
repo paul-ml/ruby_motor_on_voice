@@ -15,7 +15,7 @@
 uint32_t angle, count;
 mcpwm_config_t pwm_config;
 
-void mcpwm_gpio_initialize(mrb_vm *vm, mrb_value *v, int argc)
+void c_servo_gpio_initialize(mrb_vm *vm, mrb_value *v, int argc)
 {
     int pin = GET_INT_ARG(1);
     printf("the pin is .... %d\n", pin);
@@ -23,7 +23,7 @@ void mcpwm_gpio_initialize(mrb_vm *vm, mrb_value *v, int argc)
     mcpwm_gpio_init(MCPWM_UNIT_0, MCPWM0A, pin);    //Set GPIO 18 as PWM0A, to which servo is connected
 }
 
-void mcpwm_params_initialize(mrb_vm *vm, mrb_value *v, int argc)
+void c_servo_params_initialize(mrb_vm *vm, mrb_value *v, int argc)
 {
   int frequency = GET_INT_ARG(1);
   int duty_cycle_a = GET_INT_ARG(2);
@@ -39,7 +39,7 @@ void mcpwm_params_initialize(mrb_vm *vm, mrb_value *v, int argc)
   mcpwm_init(MCPWM_UNIT_0, MCPWM_TIMER_0, &pwm_config);    //Configure PWM0A & PWM0B with above settings
 }
 
-void mcpwm_run_servo(mrb_vm *vm, mrb_value *v, int argc)
+void c_run_servo_motor(mrb_vm *vm, mrb_value *v, int argc)
 {
   angle = GET_INT_ARG(1);
   mcpwm_set_duty_in_us(MCPWM_UNIT_0, MCPWM_TIMER_0, MCPWM_OPR_A, angle);
