@@ -4,7 +4,7 @@ GEM
     alexa_verifier (1.0.0)
     mqtt (0.5.0)
     mustermann (1.0.3)
-    rack (2.0.7)
+    rack (2.0.8)
     rack-protection (2.0.5)
       rack
     rake (12.3.3)
